@@ -16,9 +16,11 @@ data HashTree a
 instance Show (HashTree a) where
   show t = show $ leaves t
 
+-- | Combines a root hash with the generation (number of leaves minus 1)
+--
 data RootHash a = RootHash
-  Natural     -- ^ generation (the number of leaves in the tree minus 1)
-  (Digest a)  -- ^ hash
+  Natural
+  (Digest a)
   deriving (Show)
 
 data InclusionProof a = InclusionProof Natural [Digest a]
