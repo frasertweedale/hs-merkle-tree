@@ -15,7 +15,8 @@ import Test.Tasty.QuickCheck
 
 import Crypto.Hash.Tree
 
-#if ! MIN_VERSION_QuickCheck(2,9,0)
+-- NonEmpty instance was added in QuickCheck 2.9 and removed in 2.10
+#if ! MIN_VERSION_QuickCheck(2,9,0) || MIN_VERSION_QuickCheck(2,10,0)
 instance Arbitrary a => Arbitrary (NonEmpty a) where
   arbitrary = (:|) <$> arbitrary <*> arbitrary
 #endif
@@ -43,10 +44,10 @@ instance HashAlgorithm a => Arbitrary (HashTree a) where
   arbitrary = fromList <$> arbitrary
 
 instance HashAlgorithm a => Arbitrary (RootHash a) where
-  arbitrary = RootHash <$> arbitrary <*> arbitrary
+  arbitrary = RootHash <$> arbitrarySizedNatural <*> arbitrary
 
 instance HashAlgorithm a => Arbitrary (InclusionProof a) where
-  arbitrary = InclusionProof <$> arbitrary <*> arbitrary
+  arbitrary = InclusionProof <$> arbitrarySizedNatural <*> arbitrary
 
 instance HashAlgorithm a => Arbitrary (ConsistencyProof a) where
   arbitrary = ConsistencyProof <$> arbitrary
